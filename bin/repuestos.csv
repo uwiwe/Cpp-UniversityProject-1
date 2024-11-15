@@ -1,0 +1,26 @@
+modelo,marca,nombre,modelo_carro,ano_carro,precio,existencias
+AX123,AC Delco,Pastillas de freno,Soul,2012,426,32
+BR890,Denso,Freno de disco,H3,2007,33,25
+AX123,Denso,Pastillas de freno,X6 M,2013,453,7
+OP900,Denso,Pastillas de freno,C-Class,1998,261,51
+FT567,AC Delco,Bateria,Grand Voyager,1993,192,35
+GH781,Bosch,Filtro,Sedona,2012,331,57
+GH781,Denso,Pastillas de freno,Q,1992,411,75
+BR890,AC Delco,Filtro,Navigator,2001,478,60
+FT567,Bosch,Bateria,XJ Series,2000,204,96
+JH768,Bosch,Pastillas de freno,Riviera,1999,234,15
+FT567,Bosch,Pastillas de freno,Santa Fe,2012,268,90
+FT567,Bosch,Filtro,Probe,1992,33,91
+ER456,AC Delco,Pastillas de freno,Countach,1988,55,44
+JH768,AC Delco,Filtro,Thunderbird,1972,305,66
+FT567,Denso,Freno de disco,Silverado 1500,2007,105,27
+FT567,Bosch,Filtro,Expedition,2012,82,7
+OP900,AC Delco,Freno de disco,600SEL,1992,238,34
+AX123,Denso,Freno de disco,Suburban 1500,2011,248,75
+BR890,Denso,Bateria,Titan,2010,258,24
+BR890,Bosch,Bateria,Familia,1991,287,79
+AX123,Denso,Freno de disco,Mountaineer,2006,39,91
+OP900,AC Delco,Bateria,Q5,2011,314,84
+GH781,Denso,Bateria,Camry,1996,221,9
+AX123,AC Delco,Filtro,Club Wagon,1995,18,45
+ER456,Denso,Freno de disco,Century,1996,33,35
