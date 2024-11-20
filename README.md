@@ -22,13 +22,13 @@ The Vehicle Rental Business project is a system designed to manage the data and 
 Clone the repository using the following command:
 ```bash
 git clone https://github.com/uwiwe/Cpp-UniversityProject-1
-
+```
 ## Usage
 Navigate to the project's binary directory and execute the program:
 ```bash
 cd C:\root\to\the\project\rentaVehiculos\bin
 & .\'main.exe'
-
+```
 ## Contribution
 Contributions are welcome! Feel free to fork the repository, create a new branch for your changes, and submit a pull request.
 
