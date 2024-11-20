@@ -1,26 +1,201 @@
-modelo,marca,nombre,modelo_carro,ano_carro,precio,existencias
-AX123,AC Delco,Pastillas de freno,Soul,2012,426,32
-BR890,Denso,Freno de disco,H3,2007,33,25
-AX123,Denso,Pastillas de freno,X6 M,2013,453,7
-OP900,Denso,Pastillas de freno,C-Class,1998,261,51
-FT567,AC Delco,Bateria,Grand Voyager,1993,192,35
-GH781,Bosch,Filtro,Sedona,2012,331,57
-GH781,Denso,Pastillas de freno,Q,1992,411,75
-BR890,AC Delco,Filtro,Navigator,2001,478,60
-FT567,Bosch,Bateria,XJ Series,2000,204,96
-JH768,Bosch,Pastillas de freno,Riviera,1999,234,15
-FT567,Bosch,Pastillas de freno,Santa Fe,2012,268,90
-FT567,Bosch,Filtro,Probe,1992,33,91
-ER456,AC Delco,Pastillas de freno,Countach,1988,55,44
-JH768,AC Delco,Filtro,Thunderbird,1972,305,66
-FT567,Denso,Freno de disco,Silverado 1500,2007,105,27
-FT567,Bosch,Filtro,Expedition,2012,82,7
-OP900,AC Delco,Freno de disco,600SEL,1992,238,34
-AX123,Denso,Freno de disco,Suburban 1500,2011,248,75
-BR890,Denso,Bateria,Titan,2010,258,24
-BR890,Bosch,Bateria,Familia,1991,287,79
-AX123,Denso,Freno de disco,Mountaineer,2006,39,91
-OP900,AC Delco,Bateria,Q5,2011,314,84
-GH781,Denso,Bateria,Camry,1996,221,9
-AX123,AC Delco,Filtro,Club Wagon,1995,18,45
-ER456,Denso,Freno de disco,Century,1996,33,35
+id,modelo,marca,nombre,modelo_carro,ano_carro,precio,existencias
+1,JUK291,AC Delco,Caucho,Prelude,1998,291,91
+2,AB123,Bosch,Motor,LaCrosse,2007,11,0
+3,POL120,AC Delco,Pastillas de freno,H2,2009,80,20
+4,AB123,AC Delco,Volante,9-3,2005,223,97
+5,JUK291,Denso,Radiador,SC,1998,174,58
+6,KOP900,Denso,Filtro,Phantom,2006,188,24
+7,YUP010,Denso,Radio,Altima,1993,152,93
+8,FOP219,Denso,Motor,Patriot,2008,335,93
+9,FOP219,Denso,Bujia,Altima,2010,226,80
+10,KOP900,Denso,Volante,IS-F,2009,265,63
+11,KMS290,AC Delco,Motor,Justy,1992,78,11
+12,KMS290,Denso,Bujia,DBS,2011,220,4
+13,YUP010,Denso,Filtro,Touareg,2009,186,93
+14,JU786,AC Delco,Filtro,3500,1993,126,100
+15,KOP900,AC Delco,Caucho,Sunbird,1986,128,81
+16,KMS290,Bosch,Radiador,Amanti,2007,112,10
+17,AB123,Denso,Filtro,Blazer,1999,176,78
+18,POL120,AC Delco,Radiador,GTI,2006,292,51
+19,FOP219,Bosch,Pastillas de freno,Oasis,1999,305,31
+20,YUP010,AC Delco,Volante,Savana,2007,98,46
+21,JU786,Bosch,Filtro,Familia,1991,371,14
+22,HNB300,AC Delco,Caucho,Tahoe,1996,486,78
+23,FOP219,AC Delco,Caucho,Grand Vitara,2008,480,62
+24,KOP900,AC Delco,Radio,Caravan,2004,390,27
+25,KOP900,Bosch,Caucho,Stratus,2006,436,51
+26,KMS290,AC Delco,Bateria,NX,1993,399,63
+27,KMS290,AC Delco,Freno de disco,Vandura 1500,1993,45,3
+28,HNB300,Denso,Bujia,Contour,1998,75,70
+29,KMS290,Denso,Pastillas de freno,G-Series G20,1994,346,17
+30,KMS290,Denso,Radio,Explorer,1995,15,38
+31,HNB300,Denso,Bateria,Mazda5,2009,72,32
+32,JU786,AC Delco,Volante,Cougar,2001,132,4
+33,HNB300,Denso,Motor,Equus,2012,124,25
+34,POL120,Denso,Radio,Altima,2001,430,30
+35,KMS290,Bosch,Filtro,Thunderbird,1991,237,74
+36,POL120,AC Delco,Radiador,Camaro,1972,146,76
+37,JU786,Denso,Pastillas de freno,Golf III,1994,169,56
+38,YUP010,AC Delco,Radio,Monte Carlo,2000,44,73
+39,AB123,AC Delco,Radio,4Runner,1999,198,70
+40,HNB300,Denso,Freno de disco,Baja,2006,481,37
+41,JUK291,AC Delco,Bateria,Continental,1991,59,79
+42,JU786,AC Delco,Bateria,L-Series,2005,71,92
+43,FOP219,AC Delco,Radiador,Topaz,1994,23,0
+44,KMS290,Bosch,Volante,Savana 3500,2010,296,37
+45,HNB300,Bosch,Volante,CLK-Class,2009,315,35
+46,HNB300,AC Delco,Bujia,500SL,1993,188,78
+47,HNB300,Denso,Freno de disco,Town & Country,2005,340,14
+48,JU786,Denso,Caucho,Supra,1992,68,5
+49,KOP900,AC Delco,Pastillas de freno,MX-5,2007,207,83
+50,JU786,Denso,Caucho,Prizm,2000,483,11
+51,AB123,Bosch,Motor,Durango,2001,422,68
+52,FOP219,Bosch,Radiador,Impreza,2000,368,63
+53,AB123,Denso,Bateria,G,2010,67,87
+54,HNB300,AC Delco,Freno de disco,Murano,2003,226,3
+55,YUP010,Denso,Bujia,Probe,1995,412,2
+56,JUK291,Denso,Radiador,Bravada,1993,121,60
+57,KMS290,AC Delco,Caucho,Impala,2009,256,15
+58,KOP900,AC Delco,Freno de disco,Elantra,2003,182,11
+59,JU786,AC Delco,Motor,Scirocco,1987,148,12
+60,FOP219,AC Delco,Freno de disco,Cabriolet,1995,296,89
+61,JU786,Denso,Volante,Xterra,2005,53,82
+62,JU786,AC Delco,Radio,Z4,2003,263,48
+63,HNB300,Denso,Bujia,Fleetwood,1954,414,12
+64,POL120,AC Delco,Filtro,V8,1994,164,17
+65,FOP219,Denso,Motor,TSX,2006,232,76
+66,POL120,Denso,Freno de disco,Cayman,2009,240,35
+67,FOP219,Denso,Freno de disco,Impreza WRX,2011,155,27
+68,FOP219,Bosch,Caucho,Ram Wagon B150,1994,437,22
+69,YUP010,Bosch,Radio,SL-Class,1987,130,94
+70,AB123,Bosch,Motor,Sonoma,1999,395,6
+71,YUP010,AC Delco,Motor,Highlander,2011,358,53
+72,AB123,AC Delco,Volante,Classic,2005,249,60
+73,POL120,Bosch,Filtro,6 Series,1989,11,22
+74,POL120,Denso,Bateria,Cube,2010,148,20
+75,JUK291,AC Delco,Filtro,Villager,2000,367,92
+76,KMS290,Bosch,Motor,TL,1999,338,27
+77,KMS290,Bosch,Caucho,Explorer Sport,2000,48,63
+78,FOP219,AC Delco,Motor,Tahoe,2003,161,25
+79,KOP900,Bosch,Motor,Landaulet,2012,102,90
+80,HNB300,AC Delco,Pastillas de freno,Eurovan,2003,447,48
+81,KOP900,Denso,Radio,RAV4,2010,180,5
+82,AB123,Bosch,Motor,SLR McLaren,2009,10,12
+83,AB123,Denso,Bateria,Elan,1994,406,73
+84,HNB300,Bosch,Radio,E-Series,2004,102,12
+85,AB123,Denso,Bujia,Spyder,1990,95,31
+86,POL120,Bosch,Freno de disco,Accent,1997,247,36
+87,FOP219,Denso,Radiador,Justy,1992,107,36
+88,YUP010,Denso,Volante,Concorde,1998,290,39
+89,FOP219,Bosch,Freno de disco,Land Cruiser,2011,414,14
+90,JUK291,Denso,Radiador,240SX,1993,279,54
+91,JU786,Bosch,Radio,Mustang,2008,145,67
+92,KOP900,Bosch,Volante,C70,1999,386,87
+93,JU786,Denso,Caucho,Daewoo Lacetti,2008,252,74
+94,POL120,Bosch,Caucho,RS 4,2007,450,84
+95,YUP010,Denso,Radiador,300ZX,1995,171,5
+96,YUP010,Bosch,Radio,G25,2012,304,7
+97,JUK291,AC Delco,Caucho,E-Series,2001,377,86
+98,KMS290,AC Delco,Pastillas de freno,Armada,2005,353,88
+99,KOP900,Denso,Pastillas de freno,Bronco,1986,276,57
+100,YUP010,Bosch,Freno de disco,Scoupe,1993,120,37
+101,KOP900,AC Delco,Motor,Patriot,2007,80,10
+102,HNB300,Denso,Radio,Liberty,2006,87,78
+103,KOP900,AC Delco,Bujia,Laser,1991,64,23
+104,HNB300,AC Delco,Volante,MKZ,2010,166,9
+105,POL120,Denso,Motor,Range Rover,1989,148,81
+106,YUP010,Bosch,Motor,Endeavor,2007,339,84
+107,JUK291,AC Delco,Volante,Legacy,1996,300,47
+108,JUK291,Denso,Bujia,Tucson,2010,394,67
+109,YUP010,Denso,Freno de disco,Yukon XL 2500,2004,386,12
+110,AB123,Denso,Pastillas de freno,300ZX,1994,55,36
+111,FOP219,AC Delco,Radiador,300ZX,1994,136,100
+112,JU786,Denso,Volante,J,1997,55,13
+113,YUP010,AC Delco,Volante,Expedition,2012,286,70
+114,KMS290,Bosch,Bujia,Elantra,2012,314,34
+115,POL120,Denso,Radio,RX,1999,202,61
+116,YUP010,AC Delco,Filtro,Sienna,2010,158,8
+117,JUK291,AC Delco,Radio,Caprice,1994,29,23
+118,KMS290,AC Delco,Radiador,Countryman,2012,158,64
+119,AB123,AC Delco,Motor,Leone,1988,286,15
+120,HNB300,Denso,Motor,350Z,2008,445,14
+121,JUK291,Denso,Motor,Dakota,2006,370,50
+122,YUP010,Bosch,Radiador,Highlander,2012,39,99
+123,YUP010,Denso,Bateria,Tiguan,2012,391,67
+124,YUP010,Bosch,Motor,Spectra,2000,111,13
+125,KOP900,Denso,Pastillas de freno,9000,1991,417,88
+126,KOP900,Denso,Bateria,Sunbird,1990,45,47
+127,AB123,AC Delco,Caucho,Cayenne,2013,82,66
+128,AB123,Denso,Bateria,Sequoia,2003,427,0
+129,JU786,Denso,Radio,GTI,1992,330,58
+130,KOP900,Denso,Caucho,Eclipse,2008,490,85
+131,JUK291,Bosch,Radio,Park Avenue,2002,74,56
+132,HNB300,Bosch,Filtro,612 Scaglietti,2006,194,32
+133,JU786,AC Delco,Freno de disco,X5,2005,171,47
+134,KOP900,Denso,Bujia,Matrix,2006,454,34
+135,FOP219,Denso,Caucho,SVX,1997,132,96
+136,KOP900,Bosch,Motor,RX Hybrid,2008,324,79
+137,HNB300,Denso,Radiador,CX-7,2008,153,96
+138,FOP219,Denso,Pastillas de freno,Tribeca,2007,171,4
+139,KOP900,Bosch,Pastillas de freno,LeSabre,2000,182,38
+140,JUK291,Denso,Pastillas de freno,745,2002,156,23
+141,YUP010,Bosch,Motor,Tacoma,1997,442,5
+142,HNB300,AC Delco,Pastillas de freno,Beretta,1995,195,76
+143,KMS290,AC Delco,Caucho,Malibu,2004,321,100
+144,YUP010,Denso,Motor,Grand Vitara,2009,147,59
+145,POL120,Bosch,Caucho,Suburban 2500,2010,175,93
+146,AB123,Denso,Radio,Ram Wagon B350,1993,89,47
+147,AB123,Bosch,Freno de disco,Viper,2005,280,7
+148,JU786,Bosch,Radio,Crossfire,2008,112,55
+149,KOP900,AC Delco,Filtro,Tucson,2010,27,90
+150,FOP219,Denso,Freno de disco,Envoy XUV,2005,342,96
+151,HNB300,Bosch,Bujia,New Yorker,1992,166,62
+152,YUP010,Bosch,Bujia,645,2005,397,66
+153,KMS290,AC Delco,Bujia,Land Cruiser,2003,319,78
+154,AB123,Bosch,Motor,Bravada,2001,231,92
+155,HNB300,AC Delco,Volante,S4,2000,118,88
+156,FOP219,AC Delco,Bateria,Maxima,1995,443,86
+157,AB123,AC Delco,Filtro,500SEL,1993,465,16
+158,HNB300,AC Delco,Radiador,911,2004,238,10
+159,HNB300,AC Delco,Volante,Catera,2000,249,63
+160,KMS290,Bosch,Filtro,Freestar,2004,184,25
+161,JUK291,Bosch,Filtro,Cavalier,1998,38,0
+162,JUK291,Denso,Volante,Compass,2009,174,17
+163,AB123,Denso,Pastillas de freno,Range Rover,2001,490,48
+164,YUP010,Bosch,Pastillas de freno,Fiero,1985,150,68
+165,FOP219,AC Delco,Bujia,Spectra,2003,432,81
+166,YUP010,AC Delco,Volante,Escort,1985,123,23
+167,AB123,Denso,Freno de disco,E350,2009,104,8
+168,KMS290,Denso,Filtro,Challenger,2001,47,38
+169,JUK291,Denso,Filtro,X3,2007,73,91
+170,JU786,Bosch,Bateria,Tempo,1990,366,92
+171,KMS290,Denso,Bujia,MPV,1995,231,63
+172,KOP900,AC Delco,Caucho,SLS AMG,2012,249,53
+173,POL120,Denso,Caucho,Special,1962,351,6
+174,AB123,Bosch,Volante,Miata MX-5,2003,341,58
+175,JU786,Bosch,Volante,Rodeo,1997,279,47
+176,JU786,Bosch,Radio,Miata MX-5,1997,380,97
+177,POL120,AC Delco,Bateria,Stratus,2003,456,14
+178,KMS290,Bosch,Filtro,Pajero,1996,302,50
+179,YUP010,Denso,Volante,Impala,2010,352,6
+180,KMS290,Denso,Motor,Millenia,2002,255,7
+181,HNB300,AC Delco,Caucho,TL,2002,311,24
+182,KMS290,AC Delco,Freno de disco,MX-5,1999,399,30
+183,JU786,AC Delco,Bujia,Dakota,1993,151,93
+184,JU786,Denso,Caucho,Land Cruiser,1998,430,26
+185,YUP010,Bosch,Bujia,Gallardo,2006,139,89
+186,HNB300,Bosch,Volante,Z3,2001,480,37
+187,YUP010,Denso,Freno de disco,Sierra 2500,2002,338,70
+188,POL120,Bosch,Volante,Corvette,1992,383,6
+189,YUP010,AC Delco,Caucho,Eclipse,1993,183,98
+190,KOP900,Denso,Bateria,Relay,2005,102,65
+191,AB123,Denso,Bujia,Bonneville,2003,374,41
+192,AB123,Denso,Motor,LaCrosse,2008,30,82
+193,HNB300,Denso,Filtro,Gallardo,2006,395,51
+194,YUP010,Denso,Pastillas de freno,Space,1984,53,44
+195,HNB300,AC Delco,Filtro,Explorer Sport Trac,2001,472,78
+196,JU786,Denso,Radio,62,2007,324,8
+197,JU786,Bosch,Radio,Precis,1993,153,71
+198,JUK291,Denso,Bujia,Explorer,1993,184,49
+199,KMS290,Bosch,Filtro,Econoline E250,1999,315,75
+200,FOP219,Denso,Radiador,XC60,2009,435,29
