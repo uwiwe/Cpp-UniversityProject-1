@@ -721,9 +721,9 @@ int main() {
     Cliente* clientes = nullptr;
     Repuesto* repuestos = nullptr;
 
-    int vehiculosCantidad = leerVehiculos("../../bin/vehiculos.csv", vehiculos);
-    int clientesCantidad = leerClientes("../../bin/clientes.csv", clientes);
-    int repuestosCantidad = leerRepuestos("../../bin/repuestos.csv", repuestos);
+    int vehiculosCantidad = leerVehiculos("vehiculos.csv", vehiculos);
+    int clientesCantidad = leerClientes("clientes.csv", clientes);
+    int repuestosCantidad = leerRepuestos("repuestos.csv", repuestos);
 
     int opcion;
     do {
@@ -863,9 +863,9 @@ int main() {
             }
             case 16: {
                 // Guardar los datos en los archivos csv y salir
-                escribirVehiculos("../../bin/vehiculos.csv", vehiculos, vehiculosCantidad);
-                escribirClientes("../../bin/clientes.csv", clientes, clientesCantidad);
-                escribirRepuestos("../../bin/repuestos.csv", repuestos, repuestosCantidad);
+                escribirVehiculos("vehiculos.csv", vehiculos, vehiculosCantidad);
+                escribirClientes("clientes.csv", clientes, clientesCantidad);
+                escribirRepuestos("repuestos.csv", repuestos, repuestosCantidad);
                 cout << "Datos guardados. Saliendo del programa..." << endl;
                 break;
             }
