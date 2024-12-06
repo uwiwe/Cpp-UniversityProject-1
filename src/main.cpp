@@ -3,21 +3,12 @@
 #include <sstream>
 #include <string>
 
-using namespace std;
+#include "headers/vehiculo.h"
+#include "headers/cliente.h"
+#include "headers/repuesto.h"
 
-struct Vehiculo {
-    string modelo = "";
-    string marca = "";
-    string placa = "";
-    string color = "";
-    int ano = 0;
-    int kilometraje = 0;
-    bool rentado = false;
-    string motor = "";
-    double precio_renta = 0.0;
-    string ced_cliente = "";
-    string fecha_de_entrega = "";
-};
+
+using namespace std;
 
 struct Cliente {
     string cedula = "";
@@ -39,254 +30,6 @@ struct Repuesto {
     double precio = 0.0;
     int existencias = 0;
 };
-
-// FUNCIONES DE VEHICULOS ----------------------------------------------------------------------------------
-
-// Funcion para leer vehiculos desde csv
-int leerVehiculos(const string& archivo, Vehiculo*& vehiculos) {
-    ifstream file(archivo);
-    if (!file.is_open()) {
-        cerr << "Error: No se pudo abrir el archivo " << archivo << endl;
-        return -1;
-    }
-
-    string linea;
-
-    // Omitir encabezado
-    if (!getline(file, linea)) {
-        cerr << "Error: Archivo vacio o falta encabezado: " << archivo << endl;
-        file.close();
-        return -1;
-    }
-
-    // Contar lineas restantes para determinar la cantidad de vehiculos
-    int cantidad = 0;
-    streampos inicioDatos = file.tellg(); // Guardar posicion actual (despues del encabezado)
-    while (getline(file, linea)) {
-        cantidad++;
-    }
-
-    vehiculos = new Vehiculo[cantidad];
-
-    file.clear(); // Limpiar flag eof
-    file.seekg(inicioDatos);
-
-    int i = 0;
-    while (getline(file, linea)) {
-        stringstream ss(linea);
-        string temp;
-
-        getline(ss, vehiculos[i].modelo, ',');
-        getline(ss, vehiculos[i].marca, ',');
-        getline(ss, vehiculos[i].placa, ',');
-        getline(ss, vehiculos[i].color, ',');
-        if (getline(ss, temp, ',')) vehiculos[i].ano = stoi(temp);
-        if (getline(ss, temp, ',')) vehiculos[i].kilometraje = stoi(temp);
-        if (getline(ss, temp, ',')) vehiculos[i].rentado = (temp == "1");
-        getline(ss, vehiculos[i].motor, ',');
-        if (getline(ss, temp, ',')) vehiculos[i].precio_renta = stod(temp);
-        getline(ss, vehiculos[i].ced_cliente, ',');
-        getline(ss, vehiculos[i].fecha_de_entrega);
-
-        i++;
-    }
-
-    file.close();
-    return cantidad;
-}
-
-// Funcion para escribir vehiculos en csv
-void escribirVehiculos(const string& archivo, Vehiculo* vehiculos, int cantidad) {
-    ofstream file(archivo, ios::trunc); // Limpiar el archivo antes de escribir
-    if (!file.is_open()) {
-        cerr << "Error: No se pudo abrir el archivo para escribir los vehiculos." << endl;
-        return;
-    }
-
-    // Escribir encabezado
-    file << "modelo,marca,placa,color,ano,kilometraje,rentado,motor,precio_renta,ced_cliente,fecha_de_entrega\n";
-
-    // Escribir datos de cada vehiculo
-    for (int i = 0; i < cantidad; ++i) {
-        if (!vehiculos[i].placa.empty()) { // Validar que la placa no este vacia
-            file << vehiculos[i].modelo << ","
-                 << vehiculos[i].marca << ","
-                 << vehiculos[i].placa << ","
-                 << vehiculos[i].color << ","
-                 << vehiculos[i].ano << ","
-                 << vehiculos[i].kilometraje << ","
-                 << (vehiculos[i].rentado ? "1" : "0") << ","
-                 << vehiculos[i].motor << ","
-                 << vehiculos[i].precio_renta << ","
-                 << vehiculos[i].ced_cliente << ","
-                 << vehiculos[i].fecha_de_entrega << "\n";
-        }
-    }
-
-    file.close();
-}
-
-
-// Funcion para insertar nuevo vehiculo
-void insertarVehiculo(Vehiculo*& vehiculos, int& cantidad) {
-    Vehiculo nuevo;
-    cout << "Ingrese los detalles del nuevo vehiculo:" << endl;
-
-    cout << "Modelo: ";
-    getline(cin >> ws, nuevo.modelo); // "ws" Se utiliza para eliminar espacios en blanco residuales
-
-    cout << "Marca: ";
-    getline(cin >> ws, nuevo.marca);
-
-    cout << "Placa: ";
-    getline(cin >> ws, nuevo.placa);
-
-    cout << "Color: ";
-    getline(cin >> ws, nuevo.color);
-
-    cout << "Ano: ";
-    cin >> nuevo.ano;
-
-    cout << "Kilometraje: ";
-    cin >> nuevo.kilometraje;
-
-    cout << "Rentado (1 para Si, 0 para No): ";
-    cin >> nuevo.rentado;
-
-    cout << "Motor: ";
-    getline(cin >> ws, nuevo.motor);
-
-    cout << "Precio de Renta: ";
-    cin >> nuevo.precio_renta;
-
-    cout << "Cedula Cliente: ";
-    getline(cin >> ws, nuevo.ced_cliente);
-
-    cout << "Fecha de Entrega: ";
-    getline(cin >> ws, nuevo.fecha_de_entrega);
-
-    cout << "Vehiculo registrado exitosamente." << endl;
-
-    Vehiculo* nuevoArray = new Vehiculo[cantidad + 1]; // 'new' indica que estoy reservando memoria para un arreglo de vehiculo con 'count + 1' elementos
-    for (int i = 0; i < cantidad; ++i) {
-        nuevoArray[i] = vehiculos[i];
-    }
-    nuevoArray[cantidad] = nuevo;
-    delete[] vehiculos; // Liberar el espacio asignado con new
-    vehiculos = nuevoArray;
-    cantidad++;
-}
-
-// Funcion para mostrar todos los vehiculos
-void mostrarVehiculos(Vehiculo* vehiculos, int cantidad) {
-    for (int i = 0; i < cantidad; ++i) {
-        cout << "Vehiculo " << i + 1 << ": " << vehiculos[i].modelo << ", " << vehiculos[i].marca
-             << ", " << vehiculos[i].placa << ", " << vehiculos[i].color << ", " << vehiculos[i].ano
-             << ", " << vehiculos[i].kilometraje << ", " << (vehiculos[i].rentado ? "Si" : "No") << ", "
-             << vehiculos[i].motor << ", " << vehiculos[i].precio_renta << ", "
-             << vehiculos[i].ced_cliente << ", " << vehiculos[i].fecha_de_entrega << endl;
-    }
-}
-
-// Funcion para buscar vehiculo por placa
-int buscarVehiculo(Vehiculo* vehiculos, int cantidad, const string& placa) {
-    for (int i = 0; i < cantidad; ++i) {
-        if (vehiculos[i].placa == placa) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-// Funcion para editar vehiculo por placa
-void editarVehiculo(Vehiculo* vehiculos, int cantidad, const string& placa) {
-    int index = buscarVehiculo(vehiculos, cantidad, placa);
-    if (index == -1) {
-        cout << "Vehiculo no encontrado." << endl;
-        return;
-    }
-
-    cout << "Editar datos del vehiculo (Escriba -1 para no modificar):" << endl;
-
-    cout << "Modelo (" << vehiculos[index].modelo << "): ";
-    string modelo;
-    getline(cin >> ws, modelo); 
-    if (modelo != "-1") vehiculos[index].modelo = modelo;
-
-    cout << "Marca (" << vehiculos[index].marca << "): ";
-    string marca;
-    getline(cin >> ws, marca);
-    if (marca != "-1") vehiculos[index].marca = marca;
-
-    cout << "Placa (" << vehiculos[index].placa << "): ";
-    string nuevaPlaca;
-    getline(cin >> ws, nuevaPlaca);
-    if (nuevaPlaca != "-1") vehiculos[index].placa = nuevaPlaca;
-
-    cout << "Color (" << vehiculos[index].color << "): ";
-    string color;
-    getline(cin >> ws, color);
-    if (color != "-1") vehiculos[index].color = color;
-
-    cout << "Ano (" << vehiculos[index].ano << "): ";
-    int ano;
-    cin >> ano;
-    if (ano != -1) vehiculos[index].ano = ano;
-
-    cout << "Kilometraje (" << vehiculos[index].kilometraje << "): ";
-    int kilometraje;
-    cin >> kilometraje;
-    if (kilometraje != -1) vehiculos[index].kilometraje = kilometraje;
-
-    cout << "Rentado (1 para Si, 0 para No) (" << vehiculos[index].rentado << "): ";
-    int rentado;
-    cin >> rentado;
-    if (rentado != -1) vehiculos[index].rentado = rentado;
-
-    cout << "Motor (" << vehiculos[index].motor << "): ";
-    string motor;
-    getline(cin >> ws, motor);
-    if (motor != "-1") vehiculos[index].motor = motor;
-
-    cout << "Precio de Renta (" << vehiculos[index].precio_renta << "): ";
-    double precioRenta;
-    cin >> precioRenta;
-    if (precioRenta != -1) vehiculos[index].precio_renta = precioRenta;
-
-    cout << "Cedula Cliente (" << vehiculos[index].ced_cliente << "): ";
-    string cedCliente;
-    getline(cin >> ws, cedCliente);
-    if (cedCliente != "-1") vehiculos[index].ced_cliente = cedCliente;
-
-    cout << "Fecha de Entrega (" << vehiculos[index].fecha_de_entrega << "): ";
-    string fechaEntrega;
-    getline(cin >> ws, fechaEntrega);
-    if (fechaEntrega != "-1") vehiculos[index].fecha_de_entrega = fechaEntrega;
-
-    cout << "Datos del vehiculo actualizados exitosamente." << endl;
-}
-
-// Funcion para eliminar vehiculo por placa
-void eliminarVehiculo(Vehiculo*& vehiculos, int& cantidad, const string& placa) {
-    int index = buscarVehiculo(vehiculos, cantidad, placa);
-    if (index == -1) {
-        cout << "Vehiculo no encontrado." << endl;
-        return;
-    }
-
-    Vehiculo* nuevoArray = new Vehiculo[cantidad - 1];
-    for (int i = 0, j = 0; i < cantidad; ++i) {
-        if (i != index) {
-            nuevoArray[j++] = vehiculos[i];
-        }
-    }
-
-    delete[] vehiculos;
-    vehiculos = nuevoArray;
-    cantidad--;
-
-    cout << "Vehiculo eliminado exitosamente." << endl;
-}
 
 // FUNCIONES DE CLIENTES ----------------------------------------------------------------------------------
 
@@ -715,174 +458,174 @@ void eliminarRepuesto(Repuesto*& repuestos, int& cantidad, int id) {
 
 // MAIN ---------------------------------------------------------------------------------------------------
 
-int main() {
-    // Inicializar punteros y variables de cantidad para Vehiculo, Cliente y Repuesto
-    Vehiculo* vehiculos = nullptr;
-    Cliente* clientes = nullptr;
-    Repuesto* repuestos = nullptr;
+// int main() {
+//     // Inicializar punteros y variables de cantidad para Vehiculo, Cliente y Repuesto
+//     Vehiculo* vehiculos = nullptr;
+//     Cliente* clientes = nullptr;
+//     Repuesto* repuestos = nullptr;
 
-    int vehiculosCantidad = leerVehiculos("vehiculos.csv", vehiculos);
-    int clientesCantidad = leerClientes("clientes.csv", clientes);
-    int repuestosCantidad = leerRepuestos("repuestos.csv", repuestos);
+//     int vehiculosCantidad = leerVehiculos("vehiculos.csv", vehiculos);
+//     int clientesCantidad = leerClientes("clientes.csv", clientes);
+//     int repuestosCantidad = leerRepuestos("repuestos.csv", repuestos);
 
-    int opcion;
-    do {
-        cout << "\nBienvenido al Menu. Seleccione una opcion:" << endl;
-        cout << "1. Ver todos los vehiculos" << endl;
-        cout << "2. Insertar vehiculo" << endl;
-        cout << "3. Editar vehiculo" << endl;
-        cout << "4. Eliminar vehiculo" << endl;
-        cout << "5. Ver un vehiculo especifico" << endl;
-        cout << "6. Ver todos los clientes" << endl;
-        cout << "7. Insertar cliente" << endl;
-        cout << "8. Editar cliente" << endl;
-        cout << "9. Eliminar cliente" << endl;
-        cout << "10. Ver un cliente especifico" << endl;
-        cout << "11. Ver todos los repuestos" << endl;
-        cout << "12. Insertar repuesto" << endl;
-        cout << "13. Editar repuesto" << endl;
-        cout << "14. Eliminar repuesto" << endl;
-        cout << "15. Ver un repuesto especifico" << endl;
-        cout << "16. Guardar y salir" << endl;
-        cout << "17. Salir sin guardar" << endl;
-        cout << "Seleccione una opcion: ";
-        cin >> opcion;
+//     int opcion;
+//     do {
+//         cout << "\nBienvenido al Menu. Seleccione una opcion:" << endl;
+//         cout << "1. Ver todos los vehiculos" << endl;
+//         cout << "2. Insertar vehiculo" << endl;
+//         cout << "3. Editar vehiculo" << endl;
+//         cout << "4. Eliminar vehiculo" << endl;
+//         cout << "5. Ver un vehiculo especifico" << endl;
+//         cout << "6. Ver todos los clientes" << endl;
+//         cout << "7. Insertar cliente" << endl;
+//         cout << "8. Editar cliente" << endl;
+//         cout << "9. Eliminar cliente" << endl;
+//         cout << "10. Ver un cliente especifico" << endl;
+//         cout << "11. Ver todos los repuestos" << endl;
+//         cout << "12. Insertar repuesto" << endl;
+//         cout << "13. Editar repuesto" << endl;
+//         cout << "14. Eliminar repuesto" << endl;
+//         cout << "15. Ver un repuesto especifico" << endl;
+//         cout << "16. Guardar y salir" << endl;
+//         cout << "17. Salir sin guardar" << endl;
+//         cout << "Seleccione una opcion: ";
+//         cin >> opcion;
 
-        switch (opcion) {
-            case 1:
-                mostrarVehiculos(vehiculos, vehiculosCantidad);
-                break;
-            case 2:
-                insertarVehiculo(vehiculos, vehiculosCantidad);
-                break;
-            case 3: {
-                cout << "Ingrese la placa del vehiculo a editar: ";
-                string placa;
-                cin >> placa;
-                editarVehiculo(vehiculos, vehiculosCantidad, placa);
-                break;
-            }
-            case 4: {
-                cout << "Ingrese la placa del vehiculo a eliminar: ";
-                string placa;
-                cin >> placa;
-                eliminarVehiculo(vehiculos, vehiculosCantidad, placa);
-                break;
-            }
-            case 5: {
-                cout << "Ingrese la placa del vehiculo a buscar: ";
-                string placa;
-                cin >> placa;
-                int index = buscarVehiculo(vehiculos, vehiculosCantidad, placa);
-                if (index != -1) {
-                    cout << "Vehiculo encontrado: " << endl;
-                    cout << "Modelo: " << vehiculos[index].modelo << ", Marca: " << vehiculos[index].marca
-                         << ", Placa: " << vehiculos[index].placa << ", Color: " << vehiculos[index].color
-                         << ", Ano: " << vehiculos[index].ano << ", Kilometraje: " << vehiculos[index].kilometraje
-                         << ", Rentado: " << (vehiculos[index].rentado ? "Si" : "No") << ", Motor: " << vehiculos[index].motor
-                         << ", Precio de Renta: " << vehiculos[index].precio_renta << ", Cedula Cliente: "
-                         << vehiculos[index].ced_cliente << ", Fecha de Entrega: " << vehiculos[index].fecha_de_entrega << endl;
-                } else {
-                    cout << "Vehiculo no encontrado." << endl;
-                }
-                break;
-            }
-            case 6:
-                mostrarClientes(clientes, clientesCantidad);
-                break;
-            case 7:
-                insertarCliente(clientes, clientesCantidad);
-                break;
-            case 8: {
-                cout << "Ingrese la cedula del cliente a editar: ";
-                string cedula;
-                cin >> cedula;
-                editarCliente(clientes, clientesCantidad, cedula);
-                break;
-            }
-            case 9: {
-                cout << "Ingrese la cedula del cliente a eliminar: ";
-                string cedula;
-                cin >> cedula;
-                eliminarCliente(clientes, clientesCantidad, cedula);
-                break;
-            }
-            case 10: {
-                cout << "Ingrese la cedula del cliente a buscar: ";
-                string cedula;
-                cin >> cedula;
-                int index = buscarCliente(clientes, clientesCantidad, cedula);
-                if (index != -1) {
-                    cout << "Cliente encontrado: " << endl;
-                    cout << "Cedula: " << clientes[index].cedula << ", Nombre: " << clientes[index].nombre
-                         << ", Apellido: " << clientes[index].apellido << ", Email: " << clientes[index].email
-                         << ", Cantidad de Vehiculos Rentados: " << clientes[index].cantidad_vehiculos_rentados
-                         << ", Direccion: " << clientes[index].direccion
-                         << ", Activo: " << (clientes[index].activo ? "Si" : "No") << endl;
-                } else {
-                    cout << "Cliente no encontrado." << endl;
-                }
-                break;
-            }
-            case 11:
-                mostrarRepuestos(repuestos, repuestosCantidad);
-                break;
-            case 12:
-                insertarRepuesto(repuestos, repuestosCantidad);
-                break;
-            case 13: {
-                cout << "Ingrese el ID del repuesto a editar: ";
-                int id;
-                cin >> id;
-                editarRepuesto(repuestos, repuestosCantidad, id);
-                break;
-            }
-            case 14: {
-                cout << "Ingrese el ID del repuesto a eliminar: ";
-                int id;
-                cin >> id;
-                eliminarRepuesto(repuestos, repuestosCantidad, id);
-                break;
-            }
-            case 15: {
-                cout << "Ingrese el ID del repuesto a buscar: ";
-                int id;
-                cin >> id;
-                int index = buscarRepuesto(repuestos, repuestosCantidad, id);
-                if (index != -1) {
-                    cout << "Repuesto encontrado: " << endl;
-                    cout << "ID: " << repuestos[index].id << ", Modelo: " << repuestos[index].modelo
-                         << ", Marca: " << repuestos[index].marca << ", Nombre: " << repuestos[index].nombre
-                         << ", Modelo del Carro: " << repuestos[index].modelo_carro
-                         << ", Ano del Carro: " << repuestos[index].ano_carro << ", Precio: "
-                         << repuestos[index].precio << ", Existencias: " << repuestos[index].existencias << endl;
-                } else {
-                    cout << "Repuesto no encontrado." << endl;
-                }
-                break;
-            }
-            case 16: {
-                // Guardar los datos en los archivos csv y salir
-                escribirVehiculos("vehiculos.csv", vehiculos, vehiculosCantidad);
-                escribirClientes("clientes.csv", clientes, clientesCantidad);
-                escribirRepuestos("repuestos.csv", repuestos, repuestosCantidad);
-                cout << "Datos guardados. Saliendo del programa..." << endl;
-                break;
-            }
-            case 17: {
-                // El usuario puede elegir salir sin guardar los cambios hechos en los archivos
-                cout << "Saliendo del programa sin guardar cambios..." << endl;
-                break;
-            }
-            default:
-                cout << "Opcion no valida. Intente nuevamente." << endl;
-        }
-    } while (opcion != 16 && opcion != 17);
+//         switch (opcion) {
+//             case 1:
+//                 mostrarVehiculos(vehiculos, vehiculosCantidad);
+//                 break;
+//             case 2:
+//                 insertarVehiculo(vehiculos, vehiculosCantidad);
+//                 break;
+//             case 3: {
+//                 cout << "Ingrese la placa del vehiculo a editar: ";
+//                 string placa;
+//                 cin >> placa;
+//                 editarVehiculo(vehiculos, vehiculosCantidad, placa);
+//                 break;
+//             }
+//             case 4: {
+//                 cout << "Ingrese la placa del vehiculo a eliminar: ";
+//                 string placa;
+//                 cin >> placa;
+//                 eliminarVehiculo(vehiculos, vehiculosCantidad, placa);
+//                 break;
+//             }
+//             case 5: {
+//                 cout << "Ingrese la placa del vehiculo a buscar: ";
+//                 string placa;
+//                 cin >> placa;
+//                 int index = buscarVehiculo(vehiculos, vehiculosCantidad, placa);
+//                 if (index != -1) {
+//                     cout << "Vehiculo encontrado: " << endl;
+//                     cout << "Modelo: " << vehiculos[index].modelo << ", Marca: " << vehiculos[index].marca
+//                          << ", Placa: " << vehiculos[index].placa << ", Color: " << vehiculos[index].color
+//                          << ", Ano: " << vehiculos[index].ano << ", Kilometraje: " << vehiculos[index].kilometraje
+//                          << ", Rentado: " << (vehiculos[index].rentado ? "Si" : "No") << ", Motor: " << vehiculos[index].motor
+//                          << ", Precio de Renta: " << vehiculos[index].precio_renta << ", Cedula Cliente: "
+//                          << vehiculos[index].ced_cliente << ", Fecha de Entrega: " << vehiculos[index].fecha_de_entrega << endl;
+//                 } else {
+//                     cout << "Vehiculo no encontrado." << endl;
+//                 }
+//                 break;
+//             }
+//             case 6:
+//                 mostrarClientes(clientes, clientesCantidad);
+//                 break;
+//             case 7:
+//                 insertarCliente(clientes, clientesCantidad);
+//                 break;
+//             case 8: {
+//                 cout << "Ingrese la cedula del cliente a editar: ";
+//                 string cedula;
+//                 cin >> cedula;
+//                 editarCliente(clientes, clientesCantidad, cedula);
+//                 break;
+//             }
+//             case 9: {
+//                 cout << "Ingrese la cedula del cliente a eliminar: ";
+//                 string cedula;
+//                 cin >> cedula;
+//                 eliminarCliente(clientes, clientesCantidad, cedula);
+//                 break;
+//             }
+//             case 10: {
+//                 cout << "Ingrese la cedula del cliente a buscar: ";
+//                 string cedula;
+//                 cin >> cedula;
+//                 int index = buscarCliente(clientes, clientesCantidad, cedula);
+//                 if (index != -1) {
+//                     cout << "Cliente encontrado: " << endl;
+//                     cout << "Cedula: " << clientes[index].cedula << ", Nombre: " << clientes[index].nombre
+//                          << ", Apellido: " << clientes[index].apellido << ", Email: " << clientes[index].email
+//                          << ", Cantidad de Vehiculos Rentados: " << clientes[index].cantidad_vehiculos_rentados
+//                          << ", Direccion: " << clientes[index].direccion
+//                          << ", Activo: " << (clientes[index].activo ? "Si" : "No") << endl;
+//                 } else {
+//                     cout << "Cliente no encontrado." << endl;
+//                 }
+//                 break;
+//             }
+//             case 11:
+//                 mostrarRepuestos(repuestos, repuestosCantidad);
+//                 break;
+//             case 12:
+//                 insertarRepuesto(repuestos, repuestosCantidad);
+//                 break;
+//             case 13: {
+//                 cout << "Ingrese el ID del repuesto a editar: ";
+//                 int id;
+//                 cin >> id;
+//                 editarRepuesto(repuestos, repuestosCantidad, id);
+//                 break;
+//             }
+//             case 14: {
+//                 cout << "Ingrese el ID del repuesto a eliminar: ";
+//                 int id;
+//                 cin >> id;
+//                 eliminarRepuesto(repuestos, repuestosCantidad, id);
+//                 break;
+//             }
+//             case 15: {
+//                 cout << "Ingrese el ID del repuesto a buscar: ";
+//                 int id;
+//                 cin >> id;
+//                 int index = buscarRepuesto(repuestos, repuestosCantidad, id);
+//                 if (index != -1) {
+//                     cout << "Repuesto encontrado: " << endl;
+//                     cout << "ID: " << repuestos[index].id << ", Modelo: " << repuestos[index].modelo
+//                          << ", Marca: " << repuestos[index].marca << ", Nombre: " << repuestos[index].nombre
+//                          << ", Modelo del Carro: " << repuestos[index].modelo_carro
+//                          << ", Ano del Carro: " << repuestos[index].ano_carro << ", Precio: "
+//                          << repuestos[index].precio << ", Existencias: " << repuestos[index].existencias << endl;
+//                 } else {
+//                     cout << "Repuesto no encontrado." << endl;
+//                 }
+//                 break;
+//             }
+//             case 16: {
+//                 // Guardar los datos en los archivos csv y salir
+//                 escribirVehiculos("vehiculos.csv", vehiculos, vehiculosCantidad);
+//                 escribirClientes("clientes.csv", clientes, clientesCantidad);
+//                 escribirRepuestos("repuestos.csv", repuestos, repuestosCantidad);
+//                 cout << "Datos guardados. Saliendo del programa..." << endl;
+//                 break;
+//             }
+//             case 17: {
+//                 // El usuario puede elegir salir sin guardar los cambios hechos en los archivos
+//                 cout << "Saliendo del programa sin guardar cambios..." << endl;
+//                 break;
+//             }
+//             default:
+//                 cout << "Opcion no valida. Intente nuevamente." << endl;
+//         }
+//     } while (opcion != 16 && opcion != 17);
 
-    // Liberar memoria dinamica
-    delete[] vehiculos;
-    delete[] clientes;
-    delete[] repuestos;
+//     // Liberar memoria dinamica
+//     delete[] vehiculos;
+//     delete[] clientes;
+//     delete[] repuestos;
 
-    return 0;
-}
+//     return 0;
+// }
