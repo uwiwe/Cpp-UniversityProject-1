@@ -1,4 +1,4 @@
-#include "../headers/vehiculo.h"
+#include "vehiculo.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
