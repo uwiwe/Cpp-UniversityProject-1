@@ -4,6 +4,75 @@
 #include <sstream>
 using namespace std;
 
+Repuesto::Repuesto()
+    : id(0), modelo(""), marca(""), nombre(""),
+      modelo_carro(""), ano_carro(0), precio(0.0), existencias(0) {}
+
+// Implementaciones de gets y sets
+int Repuesto::getId() const {
+    return id;
+}
+
+void Repuesto::setId(int id) {
+    this->id = id;
+}
+
+string Repuesto::getModelo() const {
+    return modelo;
+}
+
+void Repuesto::setModelo(const string& modelo) {
+    this->modelo = modelo;
+}
+
+string Repuesto::getMarca() const {
+    return marca;
+}
+
+void Repuesto::setMarca(const string& marca) {
+    this->marca = marca;
+}
+
+string Repuesto::getNombre() const {
+    return nombre;
+}
+
+void Repuesto::setNombre(const string& nombre) {
+    this->nombre = nombre;
+}
+
+string Repuesto::getModeloCarro() const {
+    return modelo_carro;
+}
+
+void Repuesto::setModeloCarro(const string& modelo_carro) {
+    this->modelo_carro = modelo_carro;
+}
+
+int Repuesto::getAnoCarro() const {
+    return ano_carro;
+}
+
+void Repuesto::setAnoCarro(int ano_carro) {
+    this->ano_carro = ano_carro;
+}
+
+double Repuesto::getPrecio() const {
+    return precio;
+}
+
+void Repuesto::setPrecio(double precio) {
+    this->precio = precio;
+}
+
+int Repuesto::getExistencias() const {
+    return existencias;
+}
+
+void Repuesto::setExistencias(int existencias) {
+    this->existencias = existencias;
+}
+
 // Funcion para leer repuestos desde CSV
 int Repuesto::leerRepuestos(const string& archivo, Repuesto*& repuestos, int& cantidad) {
     ifstream file(archivo);
@@ -22,7 +91,7 @@ int Repuesto::leerRepuestos(const string& archivo, Repuesto*& repuestos, int& ca
     }
 
     // Contar lineas restantes para determinar la cantidad de repuestos
-    cantidad = 0;
+    // cantidad = 0;
     streampos inicioDatos = file.tellg(); // Guardar posicion actual (despues del encabezado)
     while (getline(file, linea)) {
         if (!linea.empty()) {

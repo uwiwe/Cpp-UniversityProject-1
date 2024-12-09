@@ -14,7 +14,7 @@ public:
         cout << "Apellido: " << cliente.getApellido() << endl;
         cout << "Email: " << cliente.getEmail() << endl;
         cout << "Cantidad de Vehiculos Rentados: " << cliente.getCantidadVehiculosRentados() << endl;
-        cout << "Dirección: " << cliente.getDireccion() << endl;
+        cout << "Direccion: " << cliente.getDireccion() << endl;
         cout << "Activo: " << (cliente.isActivo() ? "Si" : "No") << endl;
     }
 

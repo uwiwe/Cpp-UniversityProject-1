@@ -1,42 +1,143 @@
 #include <iostream>
+#include <string>
+#include <ctime>
 #include <fstream>
 #include <sstream>
-#include <string>
-
+#include <cstdlib>
+#include "controllers/vehiculoController.h"
+#include "controllers/clienteController.h"
+#include "controllers/repuestoController.h"
 
 using namespace std;
 
+void crearBackup(const string& archivoOriginal, const string& carpetaBackup, const string& nombreArchivo) {
+    string rutaBackup = carpetaBackup + "/" + nombreArchivo;
 
-// MAIN ---------------------------------------------------------------------------------------------------
+    ifstream origen(archivoOriginal, ios::binary);
+    if (!origen) {
+        cout << "Error al abrir el archivo original: " << archivoOriginal << endl;
+        return;
+    }
+
+    ofstream destino(rutaBackup, ios::binary);
+    if (!destino) {
+        cout << "Error al crear el archivo de respaldo: " << rutaBackup << endl;
+        return;
+    }
+
+    destino << origen.rdbuf();  // Copiar el contenido del archivo original al archivo de backup
+    cout << "Copia de seguridad creada: " << rutaBackup << endl;
+}
+
+string obtenerNombreBackup(const string& nombreArchivoBase) {
+    time_t t = time(0);
+    struct tm* now = localtime(&t);
+
+    stringstream nombreBackup;
+    nombreBackup << nombreArchivoBase << "_" 
+                 << (now->tm_year + 1900) 
+                 << (now->tm_mon + 1) 
+                 << now->tm_mday << "_"
+                 << now->tm_hour 
+                 << now->tm_min 
+                 << ".csv";
+
+    return nombreBackup.str();
+}
+
+void crearCarpetaBackup(const string& carpetaBackup) {
+#ifdef _WIN32
+    string comando = "mkdir " + carpetaBackup;
+#endif
+    system(comando.c_str());
+}
 
 int main() {
-    // Inicializar punteros y variables de cantidad para Vehiculo, Cliente y Repuesto
-    Vehiculo* vehiculos = nullptr;
-    Cliente* clientes = nullptr;
-    Repuesto* repuestos = nullptr;
+    Vehiculo* vehiculos = NULL;
+    Cliente* clientes = NULL;
+    Repuesto* repuestos = NULL;
 
-    int vehiculosCantidad = leerVehiculos("vehiculos.csv", vehiculos);
-    int clientesCantidad = leerClientes("clientes.csv", clientes);
-    int repuestosCantidad = leerRepuestos("repuestos.csv", repuestos);
+    int vCantidad = 0;
+    int vehiculosCantidad = Vehiculo::leerVehiculos("./vehiculos.csv", vehiculos, vCantidad);
+    int cCantidad = 0;
+    int clientesCantidad = Cliente::leerClientes("./clientes.csv", clientes, cCantidad);
+    int rCantidad = 0;
+    int repuestosCantidad = Repuesto::leerRepuestos("./repuestos.csv", repuestos, rCantidad);
 
+    bool accesoVehiculos = false;
+    bool accesoClientes = false;
+    bool accesoRepuestos = false;
+    bool puedeConsultar = false;
+    bool puedeEditar = false;
+    bool puedeEliminar = false;
+
+    cout << "Registrese:" << endl;
+    cout << "1. Admin" << endl;
+    cout << "2. Manager" << endl;
+    cout << "3. Empleado" << endl;
+    cout << "Seleccione una opcion: ";
+    int rol;
+    cin >> rol;
+
+    switch (rol) {
+        case 1: // Admin
+            accesoVehiculos = true;
+            accesoClientes = true;
+            accesoRepuestos = true;
+            puedeConsultar = true;
+            puedeEditar = true;
+            puedeEliminar = true;
+            break;
+        case 2: // Manager
+            accesoVehiculos = true;
+            accesoClientes = true;
+            accesoRepuestos = false;
+            puedeConsultar = true;
+            puedeEditar = true;
+            puedeEliminar = true;
+            break;
+        case 3: // Empleado
+            accesoVehiculos = true;
+            accesoClientes = true;
+            accesoRepuestos = true;
+            puedeConsultar = true;
+            puedeEditar = false;
+            puedeEliminar = false;
+            break;
+        default:
+            cout << "Rol no valido" << endl;
+            return 0;
+    }
+
+    bool cambiosRealizados = false;
     int opcion;
+
+    const string carpetaBackup = "backups";
+    crearCarpetaBackup(carpetaBackup);
+
     do {
-        cout << "\nBienvenido al Menu. Seleccione una opcion:" << endl;
-        cout << "1. Ver todos los vehiculos" << endl;
-        cout << "2. Insertar vehiculo" << endl;
-        cout << "3. Editar vehiculo" << endl;
-        cout << "4. Eliminar vehiculo" << endl;
-        cout << "5. Ver un vehiculo especifico" << endl;
-        cout << "6. Ver todos los clientes" << endl;
-        cout << "7. Insertar cliente" << endl;
-        cout << "8. Editar cliente" << endl;
-        cout << "9. Eliminar cliente" << endl;
-        cout << "10. Ver un cliente especifico" << endl;
-        cout << "11. Ver todos los repuestos" << endl;
-        cout << "12. Insertar repuesto" << endl;
-        cout << "13. Editar repuesto" << endl;
-        cout << "14. Eliminar repuesto" << endl;
-        cout << "15. Ver un repuesto especifico" << endl;
+        cout << "\nMenu de opciones:" << endl;
+        if (accesoVehiculos) {
+            cout << "1. Ver todos los vehiculos" << endl;
+            if (puedeEditar) cout << "2. Insertar vehiculo" << endl;
+            if (puedeEditar) cout << "3. Editar vehiculo" << endl;
+            if (puedeEliminar) cout << "4. Eliminar vehiculo" << endl;
+            cout << "5. Ver un vehiculo especifico" << endl;
+        }
+        if (accesoClientes) {
+            cout << "6. Ver todos los clientes" << endl;
+            if (puedeEditar) cout << "7. Insertar cliente" << endl;
+            if (puedeEditar) cout << "8. Editar cliente" << endl;
+            if (puedeEliminar) cout << "9. Eliminar cliente" << endl;
+            cout << "10. Ver un cliente especifico" << endl;
+        }
+        if (accesoRepuestos) {
+            cout << "11. Ver todos los repuestos" << endl;
+            if (puedeEditar) cout << "12. Insertar repuesto" << endl;
+            if (puedeEditar) cout << "13. Editar repuesto" << endl;
+            if (puedeEliminar) cout << "14. Eliminar repuesto" << endl;
+            cout << "15. Ver un repuesto especifico" << endl;
+        }
         cout << "16. Guardar y salir" << endl;
         cout << "17. Salir sin guardar" << endl;
         cout << "Seleccione una opcion: ";
@@ -44,133 +145,141 @@ int main() {
 
         switch (opcion) {
             case 1:
-                mostrarVehiculos(vehiculos, vehiculosCantidad);
+                if (accesoVehiculos) {VehiculoController::mostrarVehiculos(vehiculos, vehiculosCantidad);}
+                else {cout << "No tiene permisos para consultar vehiculos." << endl;}
                 break;
             case 2:
-                insertarVehiculo(vehiculos, vehiculosCantidad);
+                if (puedeEditar && accesoVehiculos) {
+                    VehiculoController::insertarVehiculo(vehiculos, vehiculosCantidad);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para insertar vehiculos." << endl;}
                 break;
             case 3: {
-                cout << "Ingrese la placa del vehiculo a editar: ";
-                string placa;
-                cin >> placa;
-                editarVehiculo(vehiculos, vehiculosCantidad, placa);
+                if (puedeEditar && accesoVehiculos) {
+                    cout << "Ingrese la placa del vehiculo a editar: ";
+                    string placa;
+                    cin >> placa;
+                    VehiculoController::editarVehiculo(vehiculos, vehiculosCantidad, placa);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para editar vehiculos." << endl;}
                 break;
             }
             case 4: {
-                cout << "Ingrese la placa del vehiculo a eliminar: ";
-                string placa;
-                cin >> placa;
-                eliminarVehiculo(vehiculos, vehiculosCantidad, placa);
+                if (puedeEliminar && accesoVehiculos) {
+                    cout << "Ingrese la placa del vehiculo a eliminar: ";
+                    string placa;
+                    cin >> placa;
+                    VehiculoController::eliminarVehiculo(vehiculos, vehiculosCantidad, placa);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para eliminar vehiculos." << endl;}
                 break;
             }
             case 5: {
-                cout << "Ingrese la placa del vehiculo a buscar: ";
-                string placa;
-                cin >> placa;
-                int index = buscarVehiculo(vehiculos, vehiculosCantidad, placa);
-                if (index != -1) {
-                    cout << "Vehiculo encontrado: " << endl;
-                    cout << "Modelo: " << vehiculos[index].modelo << ", Marca: " << vehiculos[index].marca
-                         << ", Placa: " << vehiculos[index].placa << ", Color: " << vehiculos[index].color
-                         << ", Ano: " << vehiculos[index].ano << ", Kilometraje: " << vehiculos[index].kilometraje
-                         << ", Rentado: " << (vehiculos[index].rentado ? "Si" : "No") << ", Motor: " << vehiculos[index].motor
-                         << ", Precio de Renta: " << vehiculos[index].precio_renta << ", Cedula Cliente: "
-                         << vehiculos[index].ced_cliente << ", Fecha de Entrega: " << vehiculos[index].fecha_de_entrega << endl;
-                } else {
-                    cout << "Vehiculo no encontrado." << endl;
-                }
+                if (accesoVehiculos) {
+                    cout << "Ingrese la placa del vehiculo a buscar: ";
+                    string placa;
+                    cin >> placa;
+                    VehiculoController::buscarVehiculo(vehiculos, vehiculosCantidad, placa);
+                } else {cout << "No tiene permisos para consultar vehiculos." << endl;}
                 break;
             }
             case 6:
-                mostrarClientes(clientes, clientesCantidad);
+                if (accesoClientes) {ClienteController::mostrarClientes(clientes, clientesCantidad);}
+                else {cout << "No tiene permisos para consultar clientes." << endl;}
                 break;
             case 7:
-                insertarCliente(clientes, clientesCantidad);
+                if (puedeEditar && accesoClientes) {
+                    ClienteController::insertarCliente(clientes, clientesCantidad);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para insertar clientes." << endl;}
                 break;
             case 8: {
-                cout << "Ingrese la cedula del cliente a editar: ";
-                string cedula;
-                cin >> cedula;
-                editarCliente(clientes, clientesCantidad, cedula);
+                if (puedeEditar && accesoClientes) {
+                    cout << "Ingrese la cedula del cliente a editar: ";
+                    string cedula;
+                    cin >> cedula;
+                    ClienteController::editarCliente(clientes, clientesCantidad, cedula);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para editar clientes." << endl;}
                 break;
             }
             case 9: {
-                cout << "Ingrese la cedula del cliente a eliminar: ";
-                string cedula;
-                cin >> cedula;
-                eliminarCliente(clientes, clientesCantidad, cedula);
+                if (puedeEliminar && accesoClientes) {
+                    cout << "Ingrese la cedula del cliente a eliminar: ";
+                    string cedula;
+                    cin >> cedula;
+                    ClienteController::eliminarCliente(clientes, clientesCantidad, cedula);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para eliminar clientes." << endl;}
                 break;
             }
             case 10: {
-                cout << "Ingrese la cedula del cliente a buscar: ";
-                string cedula;
-                cin >> cedula;
-                int index = buscarCliente(clientes, clientesCantidad, cedula);
-                if (index != -1) {
-                    cout << "Cliente encontrado: " << endl;
-                    cout << "Cedula: " << clientes[index].cedula << ", Nombre: " << clientes[index].nombre
-                         << ", Apellido: " << clientes[index].apellido << ", Email: " << clientes[index].email
-                         << ", Cantidad de Vehiculos Rentados: " << clientes[index].cantidad_vehiculos_rentados
-                         << ", Direccion: " << clientes[index].direccion
-                         << ", Activo: " << (clientes[index].activo ? "Si" : "No") << endl;
-                } else {
-                    cout << "Cliente no encontrado." << endl;
-                }
+                if (accesoClientes) {
+                    cout << "Ingrese la cedula del cliente a buscar: ";
+                    string cedula;
+                    cin >> cedula;
+                    ClienteController::buscarCliente(clientes, clientesCantidad, cedula);
+                } else {cout << "No tiene permisos para consultar clientes." << endl;}
                 break;
             }
             case 11:
-                mostrarRepuestos(repuestos, repuestosCantidad);
+                if (accesoRepuestos) {RepuestoController::mostrarRepuestos(repuestos, repuestosCantidad);}
+                else {cout << "No tiene permisos para consultar repuestos." << endl;}
                 break;
             case 12:
-                insertarRepuesto(repuestos, repuestosCantidad);
+                if (puedeEditar && accesoRepuestos) {
+                    RepuestoController::insertarRepuesto(repuestos, repuestosCantidad);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para insertar repuestos." << endl;}
                 break;
             case 13: {
-                cout << "Ingrese el ID del repuesto a editar: ";
-                int id;
-                cin >> id;
-                editarRepuesto(repuestos, repuestosCantidad, id);
+                if (puedeEditar && accesoRepuestos) {
+                    cout << "Ingrese el ID del repuesto a editar: ";
+                    int id;
+                    cin >> id;
+                    RepuestoController::editarRepuesto(repuestos, repuestosCantidad, id);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para editar repuestos." << endl;}
                 break;
             }
             case 14: {
-                cout << "Ingrese el ID del repuesto a eliminar: ";
-                int id;
-                cin >> id;
-                eliminarRepuesto(repuestos, repuestosCantidad, id);
+                if (puedeEliminar && accesoRepuestos) {
+                    cout << "Ingrese el ID del repuesto a eliminar: ";
+                    int id;
+                    cin >> id;
+                    RepuestoController::eliminarRepuesto(repuestos, repuestosCantidad, id);
+                    cambiosRealizados = true;
+                } else {cout << "No tiene permisos para eliminar repuestos." << endl;}
                 break;
             }
             case 15: {
-                cout << "Ingrese el ID del repuesto a buscar: ";
-                int id;
-                cin >> id;
-                int index = buscarRepuesto(repuestos, repuestosCantidad, id);
-                if (index != -1) {
-                    cout << "Repuesto encontrado: " << endl;
-                    cout << "ID: " << repuestos[index].id << ", Modelo: " << repuestos[index].modelo
-                         << ", Marca: " << repuestos[index].marca << ", Nombre: " << repuestos[index].nombre
-                         << ", Modelo del Carro: " << repuestos[index].modelo_carro
-                         << ", Ano del Carro: " << repuestos[index].ano_carro << ", Precio: "
-                         << repuestos[index].precio << ", Existencias: " << repuestos[index].existencias << endl;
+                if (accesoRepuestos) {
+                    cout << "Ingrese el ID del repuesto a buscar: ";
+                    int id;
+                    cin >> id;
+                    RepuestoController::buscarRepuesto(repuestos, repuestosCantidad, id);
+                } else cout << "No tiene permisos para consultar repuestos." << endl;
+                break;
+            }
+            case 16:
+                if (cambiosRealizados) {
+                    Vehiculo::escribirVehiculos("./vehiculos.csv", vehiculos, vehiculosCantidad);
+                    Cliente::escribirClientes("./clientes.csv", clientes, clientesCantidad);
+                    Repuesto::escribirRepuestos("./repuestos.csv", repuestos, repuestosCantidad);
+                    crearBackup("./vehiculos.csv", carpetaBackup, obtenerNombreBackup("vehiculos"));
+                    crearBackup("./clientes.csv", carpetaBackup, obtenerNombreBackup("clientes"));
+                    crearBackup("./repuestos.csv", carpetaBackup, obtenerNombreBackup("repuestos"));
+                    cout << "Cambios guardados. Saliendo..." << endl;
                 } else {
-                    cout << "Repuesto no encontrado." << endl;
+                    cout << "No hay cambios para guardar. Saliendo..." << endl;
                 }
                 break;
-            }
-            case 16: {
-                // Guardar los datos en los archivos csv y salir
-                escribirVehiculos("vehiculos.csv", vehiculos, vehiculosCantidad);
-                escribirClientes("clientes.csv", clientes, clientesCantidad);
-                escribirRepuestos("repuestos.csv", repuestos, repuestosCantidad);
-                cout << "Datos guardados. Saliendo del programa..." << endl;
+            case 17:
+                cout << "Saliendo sin guardar cambios..." << endl;
                 break;
-            }
-            case 17: {
-                // El usuario puede elegir salir sin guardar los cambios hechos en los archivos
-                cout << "Saliendo del programa sin guardar cambios..." << endl;
-                break;
-            }
             default:
                 cout << "Opcion no valida. Intente nuevamente." << endl;
-        }
+        } 
     } while (opcion != 16 && opcion != 17);
 
     // Liberar memoria dinamica

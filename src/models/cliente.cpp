@@ -4,6 +4,67 @@
 #include <sstream>
 using namespace std;
 
+Cliente::Cliente()
+    : cedula(""), nombre(""), apellido(""), email(""),
+      cantidad_vehiculos_rentados(0), direccion(""), activo(false) {}
+
+// Gets y sets
+string Cliente::getCedula() const {
+    return cedula;
+}
+
+void Cliente::setCedula(const string& cedula) {
+    this->cedula = cedula;
+}
+
+string Cliente::getNombre() const {
+    return nombre;
+}
+
+void Cliente::setNombre(const string& nombre) {
+    this->nombre = nombre;
+}
+
+string Cliente::getApellido() const {
+    return apellido;
+}
+
+void Cliente::setApellido(const string& apellido) {
+    this->apellido = apellido;
+}
+
+string Cliente::getEmail() const {
+    return email;
+}
+
+void Cliente::setEmail(const string& email) {
+    this->email = email;
+}
+
+int Cliente::getCantidadVehiculosRentados() const {
+    return cantidad_vehiculos_rentados;
+}
+
+void Cliente::setCantidadVehiculosRentados(int cantidad) {
+    cantidad_vehiculos_rentados = cantidad;
+}
+
+string Cliente::getDireccion() const {
+    return direccion;
+}
+
+void Cliente::setDireccion(const string& direccion) {
+    this->direccion = direccion;
+}
+
+bool Cliente::isActivo() const {
+    return activo;
+}
+
+void Cliente::setActivo(bool activo) {
+    this->activo = activo;
+}
+
 // Funcion para leer clientes desde csv
 int Cliente::leerClientes(const string& archivo, Cliente*& clientes, int& cantidad) {
     ifstream file(archivo);
@@ -22,7 +83,7 @@ int Cliente::leerClientes(const string& archivo, Cliente*& clientes, int& cantid
     }
 
     // Contar lineas restantes para determinar la cantidad de clientes
-    cantidad = 0;
+    // cantidad = 0;
     streampos inicioDatos = file.tellg(); // Guardar posicion actual (despues del encabezado)
     while (getline(file, linea)) {
         cantidad++;

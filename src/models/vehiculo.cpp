@@ -5,8 +5,103 @@
 
 using namespace std;
 
+Vehiculo::Vehiculo() 
+    : modelo(""), marca(""), placa(""), color(""),
+      ano(0), kilometraje(0), rentado(false),
+      motor(""), precio_renta(0.0), ced_cliente(""), fecha_de_entrega("") {}
+
+// Implementaciones de gets y sets
+string Vehiculo::getModelo() const {
+    return modelo;
+}
+
+void Vehiculo::setModelo(const string& m) {
+    modelo = m;
+}
+
+string Vehiculo::getMarca() const {
+    return marca;
+}
+
+void Vehiculo::setMarca(const string& m) {
+    marca = m;
+}
+
+string Vehiculo::getPlaca() const {
+    return placa;
+}
+
+void Vehiculo::setPlaca(const string& p) {
+    placa = p;
+}
+
+string Vehiculo::getColor() const {
+    return color;
+}
+
+void Vehiculo::setColor(const string& c) {
+    color = c;
+}
+
+int Vehiculo::getAno() const {
+    return ano;
+}
+
+void Vehiculo::setAno(int a) {
+    ano = a;
+}
+
+int Vehiculo::getKilometraje() const {
+    return kilometraje;
+}
+
+void Vehiculo::setKilometraje(int k) {
+    kilometraje = k;
+}
+
+bool Vehiculo::isRentado() const {
+    return rentado;
+}
+
+void Vehiculo::setRentado(bool r) {
+    rentado = r;
+}
+
+string Vehiculo::getMotor() const {
+    return motor;
+}
+
+void Vehiculo::setMotor(const string& m) {
+    motor = m;
+}
+
+double Vehiculo::getPrecioRenta() const {
+    return precio_renta;
+}
+
+void Vehiculo::setPrecioRenta(double p) {
+    precio_renta = p;
+}
+
+string Vehiculo::getCedCliente() const {
+    return ced_cliente;
+}
+
+void Vehiculo::setCedCliente(const string& c) {
+    ced_cliente = c;
+}
+
+string Vehiculo::getFechaDeEntrega() const {
+    return fecha_de_entrega;
+}
+
+void Vehiculo::setFechaDeEntrega(const string& f) {
+    fecha_de_entrega = f;
+}
+
 // Funcion para leer vehiculos desde CSV
 int Vehiculo::leerVehiculos(const string& archivo, Vehiculo*& vehiculos, int& cantidad) {
+
     ifstream file(archivo);
     if (!file.is_open()) {
         cerr << "Error: No se pudo abrir el archivo " << archivo << endl;
@@ -23,7 +118,7 @@ int Vehiculo::leerVehiculos(const string& archivo, Vehiculo*& vehiculos, int& ca
     }
 
     // Contar lineas restantes para determinar la cantidad de vehiculos
-    cantidad = 0;
+    // cantidad = 0;
     streampos inicioDatos = file.tellg(); // Guardar posicion actual (despues del encabezado)
     while (getline(file, linea)) {
         cantidad++;
@@ -206,7 +301,7 @@ void Vehiculo::editarVehiculo(Vehiculo* vehiculos, int cantidad, const string& p
     bool valBool;
 
     cout << "Modelo (" << vehiculos[index].getModelo() << "): ";
-    getline(cin >> ws, temp);
+    getline(cin >> ws, temp); 
     if (temp != "-1") vehiculos[index].setModelo(temp);
 
     cout << "Marca (" << vehiculos[index].getMarca() << "): ";
@@ -224,14 +319,17 @@ void Vehiculo::editarVehiculo(Vehiculo* vehiculos, int cantidad, const string& p
     cout << "Ano (" << vehiculos[index].getAno() << "): ";
     cin >> valInt;
     if (valInt != -1) vehiculos[index].setAno(valInt);
+    cin.ignore();
 
     cout << "Kilometraje (" << vehiculos[index].getKilometraje() << "): ";
     cin >> valInt;
     if (valInt != -1) vehiculos[index].setKilometraje(valInt);
+    cin.ignore();
 
     cout << "Rentado (1 para Si, 0 para No) (" << (vehiculos[index].isRentado() ? "Si" : "No") << "): ";
     cin >> valBool;
     if (valBool != -1) vehiculos[index].setRentado(valBool);
+    cin.ignore();
 
     cout << "Motor (" << vehiculos[index].getMotor() << "): ";
     getline(cin >> ws, temp);
@@ -240,6 +338,7 @@ void Vehiculo::editarVehiculo(Vehiculo* vehiculos, int cantidad, const string& p
     cout << "Precio de Renta (" << vehiculos[index].getPrecioRenta() << "): ";
     cin >> valDouble;
     if (valDouble != -1) vehiculos[index].setPrecioRenta(valDouble);
+    cin.ignore();
 
     cout << "Cedula Cliente (" << vehiculos[index].getCedCliente() << "): ";
     getline(cin >> ws, temp);
